@@ -1,0 +1,14 @@
+{
+  "preset": "ts-jest",
+  "testEnvironment": "node",
+  "rootDir": ".",
+  "testRegex": "test/.*\\.spec\\.ts$",
+  "moduleFileExtensions": ["js", "json", "ts"],
+  "transform": {
+    "^.+\\.ts$": ["ts-jest", { "tsconfig": "tsconfig.json" }]
+  },
+  "collectCoverageFrom": ["src/**/*.ts"],
+  "coverageReporters": ["text", "json-summary", "lcov"],
+  "coverageThreshold": { "global": { "lines": 80 } },
+  "testTimeout": 20000
+}

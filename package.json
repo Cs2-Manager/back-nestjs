@@ -1,0 +1,48 @@
+{
+  "name": "cs2-manager-realtime",
+  "version": "1.0.0",
+  "private": true,
+  "description": "CS2 Manager Realtime Service (NestJS + Socket.IO)",
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "start:dev": "nest start --watch",
+    "lint": "tsc --noEmit",
+    "test": "jest --runInBand",
+    "test:unit": "jest --runInBand test/unit",
+    "test:e2e": "jest --runInBand test/e2e",
+    "test:coverage": "jest --runInBand --coverage"
+  },
+  "dependencies": {
+    "@nestjs/common": "11.1.28",
+    "@nestjs/core": "11.1.28",
+    "@nestjs/platform-express": "11.2.9",
+    "@nestjs/platform-socket.io": "11.1.28",
+    "@nestjs/websockets": "11.1.28",
+    "class-transformer": "0.5.1",
+    "class-validator": "0.15.1",
+    "jsonwebtoken": "9.0.3",
+    "reflect-metadata": "0.2.2",
+    "rxjs": "7.8.2",
+    "socket.io": "4.8.4"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "11.0.24",
+    "@nestjs/testing": "11.1.28",
+    "@types/express": "5.0.3",
+    "@types/jest": "29.5.14",
+    "@types/jsonwebtoken": "9.0.10",
+    "@types/node": "22.19.0",
+    "@types/supertest": "6.0.3",
+    "jest": "29.7.0",
+    "socket.io-client": "4.8.4",
+    "supertest": "7.1.4",
+    "ts-jest": "29.2.5",
+    "ts-node": "10.9.2",
+    "typescript": "5.9.3"
+  }
+}
