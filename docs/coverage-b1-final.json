@@ -1,0 +1,12 @@
+{
+  "command": "npm run test:coverage -- --silent",
+  "scope": "All src/**/*.ts including main.ts; unchanged Jest coverage configuration",
+  "suites": { "passed": 15, "total": 15 },
+  "tests": { "passed": 100, "total": 100 },
+  "total": {
+    "lines": { "total": 728, "covered": 705, "skipped": 0, "pct": 96.84 },
+    "statements": { "total": 842, "covered": 802, "skipped": 0, "pct": 95.24 },
+    "functions": { "total": 153, "covered": 151, "skipped": 0, "pct": 98.69 },
+    "branches": { "total": 289, "covered": 245, "skipped": 0, "pct": 84.77 }
+  }
+}

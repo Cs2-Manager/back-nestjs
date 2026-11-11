@@ -1,0 +1,69 @@
+# Stack del servicio de notificaciones en tiempo real (NestJS + Socket.IO).
+#
+# Es un stack independiente: no modifica back/docker-compose.yml ni
+# front/docker-compose.yml. Se une a la red externa "cs2-network" con el alias
+# DNS "realtime", que es el nombre usado por nginx (front/nginx.conf) y por el
+# backend Flask (REALTIME_URL=http://realtime:3000).
+#
+# El secreto HMAC se comparte mediante un archivo dentro del volumen privado
+# existente "back_matchmaking_storage" (montado aquí en solo lectura). No se
+# publica en variables de entorno ni en imágenes.
+#
+# El JWT de sesión de Flask se valida localmente con HS256: REALTIME_JWT_SECRET
+# debe tener EXACTAMENTE el mismo valor que SECRET_KEY en back/.env.
+#
+# Levantar:  docker compose up -d --build
+# Estado:    docker compose ps
+# Logs:      docker compose logs -f realtime
+
+services:
+  realtime:
+    build: .
+    container_name: cs2_manager_realtime
+    restart: unless-stopped
+
+    # Variables documentadas en .env.example. Copiar a .env y ajustar.
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      # Ruta del secreto HMAC dentro del volumen compartido (solo lectura).
+      - REALTIME_HMAC_SECRET_FILE=/var/lib/cs2-matchmaking/realtime_hmac_secret
+
+    # Solo loopback: útil para depurar desde el host. La LAN entra por nginx.
+    ports:
+      - "127.0.0.1:3000:3000"
+
+    volumes:
+      # El mismo volumen que ya usan backend y worker. Solo lectura.
+      - matchmaking_storage:/var/lib/cs2-matchmaking:ro
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "fetch('http://127.0.0.1:3000/health').then((r)=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+    networks:
+      - cs2-network
+
+networks:
+  # Red externa compartida con los stacks back/ y front/. Crearla una vez:
+  #   docker network create cs2-network
+  cs2-network:
+    external: true
+
+volumes:
+  # Volumen existente del stack del backend. NUNCA borrarlo: contiene las demos
+  # y el secreto HMAC compartido.
+  matchmaking_storage:
+    external: true
+    name: back_matchmaking_storage

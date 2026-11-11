@@ -1,0 +1,5802 @@
+{
+  "scope": "realtime/ standalone; src + test; no dependencies/build/coverage/tool configuration",
+  "methodology": "Guide 28/10/2026 §4.5: comments/imports removed, whitespace normalized, file-local five-line windows, unique affected lines; AST locates TS methods/classes, regex estimates complexity",
+  "limitations": [
+    "Not the official analyzer; its full regexes are unavailable",
+    "TypeScript scanner comment removal has edge cases with regex/template literals",
+    "Complexity regex can match branch words inside strings and nested functions",
+    "Callbacks and constructors included; official function detection may differ",
+    "Cohesion uses directly shared fields, excludes constructor and does not follow method delegation",
+    "CBO identifiers include framework decorators/interfaces and constants; manual review required",
+    "Layer matching by filenames versus directories is not specified exactly in the guide"
+  ],
+  "files": [
+    {
+      "file": "src/app.factory.ts",
+      "sha256": "84417bd84c9cdb86152384fafe2071c0e8be6f300f4b48e167f6fa87bc24823d",
+      "normalized_lines": 14
+    },
+    {
+      "file": "src/app.module.ts",
+      "sha256": "7bb3fb67a3aa21eacd5b7280643eb79e37f7d58883604e8d0a9daba5deeced83",
+      "normalized_lines": 10
+    },
+    {
+      "file": "src/auth/auth.module.ts",
+      "sha256": "d7d7d7f8f0eeb8b25528c2f2be51aca78d772680dc22beb485270841d7323e7b",
+      "normalized_lines": 4
+    },
+    {
+      "file": "src/auth/auth.types.ts",
+      "sha256": "6aa3e46dcf1ad14e24b779e92c01e49bb0680ef9cad73512a06af12fc17e2d5e",
+      "normalized_lines": 20
+    },
+    {
+      "file": "src/auth/identity-verifier.service.ts",
+      "sha256": "33c99ae526f89d591fd3f8949e311dd05e4183e35507926116b3551011d3c8a6",
+      "normalized_lines": 106
+    },
+    {
+      "file": "src/auth/jwt-verifier.service.ts",
+      "sha256": "53e91cbeba21d4323652e04ca563c8b5c1fbeafca2543ed07e399715cf042a01",
+      "normalized_lines": 42
+    },
+    {
+      "file": "src/common/common.module.ts",
+      "sha256": "e722a5c16979b8d6b01d2e6283f4d355ead59a34dd3e859dc23a3338b321f870",
+      "normalized_lines": 5
+    },
+    {
+      "file": "src/common/hmac.ts",
+      "sha256": "6ae80ec0cffc66ff31eedb907ff9f3221c8ce59b8ade2c375615ce304a5df9d6",
+      "normalized_lines": 31
+    },
+    {
+      "file": "src/common/replay-store.service.ts",
+      "sha256": "224cfd79c62132a623e8340e0055bc8d36d37b45c1d1bd4829ff92cc60ddc98c",
+      "normalized_lines": 20
+    },
+    {
+      "file": "src/config/config.module.ts",
+      "sha256": "1c008220363b089363ae08b1f3b55d863a54be46072952fc90a6d5940769725e",
+      "normalized_lines": 7
+    },
+    {
+      "file": "src/config/realtime-config.ts",
+      "sha256": "9e32cd96d869ef1f29abdcf7b90cc9f96b37f4f5e32ff6d85acd67740c3114a4",
+      "normalized_lines": 102
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "sha256": "1f4842d53023cca19b20de5b0d0592e391562adabe0a7cadc2a2b855ccd30450",
+      "normalized_lines": 258
+    },
+    {
+      "file": "src/events/event.dto.ts",
+      "sha256": "9de06f5b24bebb0e55f43fb259b58b31e4cb51e846c97d714ef055a78e0a9a14",
+      "normalized_lines": 40
+    },
+    {
+      "file": "src/events/event.types.ts",
+      "sha256": "12ef5b3ba967ad0fcc4d6f8d94eec1376910bcb80ff00f0822e67fafa3ca938f",
+      "normalized_lines": 90
+    },
+    {
+      "file": "src/events/events.controller.ts",
+      "sha256": "befb6e31adadfa6001bf0eaee4e8d4de9040f87d7b30e515c93fa0d2a721f9fd",
+      "normalized_lines": 37
+    },
+    {
+      "file": "src/events/events.module.ts",
+      "sha256": "53bb252caa9389feea94e186a9e6bb01bbef37153d779ce4b728a858a77393ea",
+      "normalized_lines": 5
+    },
+    {
+      "file": "src/events/events.service.ts",
+      "sha256": "9c73748364134397a349108cac9cc73fdf70c600ca17a5498818bf8dda3b4991",
+      "normalized_lines": 64
+    },
+    {
+      "file": "src/events/hmac.guard.ts",
+      "sha256": "bb5a42ab90236110bdc5a90b7b248764906b91cbf478de2ec2b43ecd4a2fe73f",
+      "normalized_lines": 46
+    },
+    {
+      "file": "src/health/health.controller.ts",
+      "sha256": "1fd1cfc7e5505376e911c09427b1a8a70ceac276cfd26ec13594385955b87f5f",
+      "normalized_lines": 13
+    },
+    {
+      "file": "src/health/health.module.ts",
+      "sha256": "eafa4b0e7a38fb8703d991a307e890b882e9af428b1d8009d406d0e9d04e2c69",
+      "normalized_lines": 4
+    },
+    {
+      "file": "src/main.ts",
+      "sha256": "b09ab5485dbc54034c013759f186a1138bb45f4971ac2802dbc47120a21af0b2",
+      "normalized_lines": 12
+    },
+    {
+      "file": "src/notifications/notification.factory.ts",
+      "sha256": "144dac30cd1e839b4458b4d0a8edc377cd63da4236335ef62924037320a359e8",
+      "normalized_lines": 130
+    },
+    {
+      "file": "src/notifications/notification.types.ts",
+      "sha256": "40e77aeb7fe2e6be477772e7584240661d8c2669eab62900562c677aa45529ee",
+      "normalized_lines": 23
+    },
+    {
+      "file": "src/notifications/notifications.module.ts",
+      "sha256": "a93990bd7a364521a4bc64c1cc54136a7995dccf017706156f280e1f2766a5fc",
+      "normalized_lines": 4
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "sha256": "e966f50ce5dc2f681e3a69f3fbf05325bfe64feaea67baa0777dfb619529f77b",
+      "normalized_lines": 33
+    },
+    {
+      "file": "src/realtime/realtime-io.adapter.ts",
+      "sha256": "e42bed9483a6774dfbd362bd7d51d752826ad37d2fc1042836e77aa57493e3e2",
+      "normalized_lines": 33
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "sha256": "525a6a594b098eed0923ea87d79b33d9350e8973a042a5f0d10fc86ab9f86aea",
+      "normalized_lines": 191
+    },
+    {
+      "file": "src/realtime/realtime.module.ts",
+      "sha256": "44df45943aaf47476832f7733156d2f319b62dc6fa69c3dfaf2403ee902c7db6",
+      "normalized_lines": 11
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "sha256": "f33e4d0cf510318acd3c162c8128c1ccc4ecb58c82ffd1ca1bb069d6d6f33de9",
+      "normalized_lines": 124
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "sha256": "bd5aaa00890d2dc01dea2cb41a380ecfc93e599389ecb8ebab85fccdfdc99b85",
+      "normalized_lines": 268
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "sha256": "9bed6b14ee769f4142ac17e9e5ad34bd76f283c19c0096e5a35d5edb0c6a5733",
+      "normalized_lines": 285
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "sha256": "6d3e84c43dec663b8e4c82b2b3e38e8cee218a97081121156739457fe15005e6",
+      "normalized_lines": 177
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "sha256": "d2ade63e9884825d1ca0acd0cc0e3e6ebafc0f2ad15468b688c472649a12ef9e",
+      "normalized_lines": 26
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "sha256": "d1fed60db53740e91358f15d0f59a8fceab9b02375dce1b93357430ffe944927",
+      "normalized_lines": 67
+    },
+    {
+      "file": "test/unit/connection-limiter.spec.ts",
+      "sha256": "8fde78b8f4d379af671bf6d965705a11b3cd7ec92a17a5f1147766e787e076d0",
+      "normalized_lines": 43
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "sha256": "4715bb6665ab16740ec643f986c7fcd3f91408ebb07487680e08929fa08b0f1b",
+      "normalized_lines": 103
+    },
+    {
+      "file": "test/unit/events-service.spec.ts",
+      "sha256": "0d0433a22bfac12034eb67ae010a5d6a3c1e39bd664e2a219ca2ada3822bf146",
+      "normalized_lines": 64
+    },
+    {
+      "file": "test/unit/hmac.spec.ts",
+      "sha256": "91ab54ec738c1bfaf930fed2c84385c373c224b5d7508e020f84c05100f47421",
+      "normalized_lines": 26
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "sha256": "db725481c578fdbfe31bdb0551fcbc4e743a4610a8a1f5e85ce748a543cd1e01",
+      "normalized_lines": 108
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "sha256": "7f3d17cfbe4e16e6530947e746dd80d435d513238f4b42f51dd6569ebbb11424",
+      "normalized_lines": 63
+    },
+    {
+      "file": "test/unit/notification-factory.spec.ts",
+      "sha256": "bf97905253ef359aa2202f11b79970695305782afa15de07a095166e3914c01c",
+      "normalized_lines": 49
+    },
+    {
+      "file": "test/unit/replay-store.spec.ts",
+      "sha256": "22c2a65a96c0cd52839e3ed8a95646d5f26ae459cf851c410659fa27d197e06c",
+      "normalized_lines": 24
+    },
+    {
+      "file": "test/unit/socket-registry.spec.ts",
+      "sha256": "1b6781b8f8573d163a5fabd7cd696926427e5f97b37184515200a6d8dc1ca04d",
+      "normalized_lines": 38
+    }
+  ],
+  "summary": {
+    "files": 43,
+    "test_files": 14,
+    "loc_nonempty": 3838,
+    "normalized_lines": 2820,
+    "duplicated_unique_lines": 222,
+    "duplicate_percentage": 7.872340425531915,
+    "duplicate_window_groups": 41,
+    "overlapping_incidences": 445,
+    "overlapping_percentage_same_normalization": 15.78014184397163,
+    "HTTP_endpoints": 2,
+    "low_cohesion": 3,
+    "high_coupling": 5,
+    "complex": 25,
+    "long_methods": 8,
+    "long_functions": 24,
+    "long_params": 3,
+    "size_findings": 35,
+    "weight_without_layer_penalty": 363.8085106382979,
+    "estimated_index_without_layer_penalty": 10,
+    "thresholds": {
+      "complexity_max": 19,
+      "size_max": 38,
+      "coupling_max": 7
+    }
+  },
+  "signals": {
+    "SEC": [],
+    "SQL": [
+      {
+        "file": "src/common/hmac.ts",
+        "line": 6
+      }
+    ],
+    "DBG": [],
+    "Any": []
+  },
+  "endpoints": [
+    {
+      "file": "src/events/events.controller.ts",
+      "line": 30,
+      "decorator": "Post",
+      "argument": "'events'"
+    },
+    {
+      "file": "src/health/health.controller.ts",
+      "line": 9,
+      "decorator": "Get",
+      "argument": "'health'"
+    }
+  ],
+  "classes": [
+    {
+      "file": "src/app.module.ts",
+      "name": "AppModule",
+      "line": 11,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Module"
+      ],
+      "cbo": 1,
+      "high_coupling": false
+    },
+    {
+      "file": "src/auth/auth.module.ts",
+      "name": "AuthModule",
+      "line": 6,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Module"
+      ],
+      "cbo": 1,
+      "high_coupling": false
+    },
+    {
+      "file": "src/auth/auth.types.ts",
+      "name": "AuthError",
+      "line": 25,
+      "fields": [
+        "code"
+      ],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "AuthErrorCode"
+      ],
+      "cbo": 1,
+      "high_coupling": false
+    },
+    {
+      "file": "src/auth/identity-verifier.service.ts",
+      "name": "IdentityVerifierService",
+      "line": 30,
+      "fields": [
+        "cache",
+        "config",
+        "logger",
+        "pending"
+      ],
+      "methods": [
+        {
+          "name": "verify",
+          "fields": [
+            "cache",
+            "config",
+            "pending"
+          ]
+        },
+        {
+          "name": "fetchIdentity",
+          "fields": [
+            "cache",
+            "config",
+            "logger"
+          ]
+        },
+        {
+          "name": "invalidate",
+          "fields": [
+            "cache",
+            "pending"
+          ]
+        },
+        {
+          "name": "parseTeamId",
+          "fields": []
+        },
+        {
+          "name": "parseRole",
+          "fields": []
+        }
+      ],
+      "pairs": 10,
+      "shared_pairs": 3,
+      "eligible_cohesion": true,
+      "cohesion": 0.3,
+      "low_cohesion": true,
+      "external_identifiers": [
+        "AbortController",
+        "AbortSignal",
+        "AuthenticatedUser",
+        "CacheEntry",
+        "EMPTY_IDENTITY",
+        "IdentityInfo",
+        "Inject",
+        "Injectable",
+        "Logger",
+        "MAX_SAFE_INTEGER",
+        "Math",
+        "REALTIME_CONFIG",
+        "RealtimeConfig",
+        "Response"
+      ],
+      "cbo": 14,
+      "high_coupling": true
+    },
+    {
+      "file": "src/auth/jwt-verifier.service.ts",
+      "name": "JwtVerifierService",
+      "line": 11,
+      "fields": [
+        "config"
+      ],
+      "methods": [
+        {
+          "name": "verify",
+          "fields": [
+            "config"
+          ]
+        }
+      ],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "AuthenticatedUser",
+        "Inject",
+        "Injectable",
+        "JsonWebTokenError",
+        "REALTIME_CONFIG",
+        "RealtimeConfig",
+        "TokenExpiredError"
+      ],
+      "cbo": 7,
+      "high_coupling": false
+    },
+    {
+      "file": "src/common/common.module.ts",
+      "name": "CommonModule",
+      "line": 5,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Global",
+        "Module"
+      ],
+      "cbo": 2,
+      "high_coupling": false
+    },
+    {
+      "file": "src/common/replay-store.service.ts",
+      "name": "ReplayStoreService",
+      "line": 10,
+      "fields": [
+        "entries"
+      ],
+      "methods": [
+        {
+          "name": "remember",
+          "fields": [
+            "entries"
+          ]
+        },
+        {
+          "name": "has",
+          "fields": [
+            "entries"
+          ]
+        },
+        {
+          "name": "clear",
+          "fields": [
+            "entries"
+          ]
+        },
+        {
+          "name": "prune",
+          "fields": [
+            "entries"
+          ]
+        }
+      ],
+      "pairs": 6,
+      "shared_pairs": 6,
+      "eligible_cohesion": false,
+      "cohesion": 1,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Injectable",
+        "MAX_ENTRIES",
+        "ServiceUnavailableException"
+      ],
+      "cbo": 3,
+      "high_coupling": false
+    },
+    {
+      "file": "src/config/config.module.ts",
+      "name": "RealtimeConfigModule",
+      "line": 5,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Global",
+        "Module",
+        "REALTIME_CONFIG"
+      ],
+      "cbo": 3,
+      "high_coupling": false
+    },
+    {
+      "file": "src/events/event.dto.ts",
+      "name": "ActorDto",
+      "line": 21,
+      "fields": [
+        "user_id",
+        "username"
+      ],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "IsInt",
+        "IsString",
+        "Min"
+      ],
+      "cbo": 3,
+      "high_coupling": false
+    },
+    {
+      "file": "src/events/event.dto.ts",
+      "name": "InternalEventDto",
+      "line": 34,
+      "fields": [
+        "actor",
+        "event_id",
+        "event_type",
+        "notification_id",
+        "occurred_at",
+        "payload",
+        "recipients",
+        "resource_id",
+        "team_id",
+        "version"
+      ],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "ArrayMaxSize",
+        "ArrayNotEmpty",
+        "EVENT_TYPES",
+        "Equals",
+        "EventType",
+        "IsArray",
+        "IsISO8601",
+        "IsIn",
+        "IsInt",
+        "IsObject",
+        "IsOptional",
+        "IsUUID",
+        "MAX_SAFE_INTEGER",
+        "Max",
+        "Min",
+        "Type",
+        "ValidateNested"
+      ],
+      "cbo": 17,
+      "high_coupling": true
+    },
+    {
+      "file": "src/events/event.types.ts",
+      "name": "EventValidationError",
+      "line": 118,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [],
+      "cbo": 0,
+      "high_coupling": false
+    },
+    {
+      "file": "src/events/events.controller.ts",
+      "name": "EventsController",
+      "line": 21,
+      "fields": [
+        "config",
+        "eventsService",
+        "replayStore"
+      ],
+      "methods": [
+        {
+          "name": "receive",
+          "fields": [
+            "config",
+            "eventsService",
+            "replayStore"
+          ]
+        }
+      ],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "BadRequestException",
+        "ConflictException",
+        "Controller",
+        "HttpCode",
+        "Inject",
+        "InternalEvent",
+        "Post",
+        "REALTIME_CONFIG",
+        "RawBodyRequest",
+        "RealtimeConfig",
+        "Req",
+        "Request",
+        "UseGuards"
+      ],
+      "cbo": 13,
+      "high_coupling": true
+    },
+    {
+      "file": "src/events/events.module.ts",
+      "name": "EventsModule",
+      "line": 8,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Module"
+      ],
+      "cbo": 1,
+      "high_coupling": false
+    },
+    {
+      "file": "src/events/events.service.ts",
+      "name": "EventsService",
+      "line": 20,
+      "fields": [
+        "gateway",
+        "notifications"
+      ],
+      "methods": [
+        {
+          "name": "dispatch",
+          "fields": [
+            "gateway",
+            "notifications"
+          ]
+        },
+        {
+          "name": "dispatchActivity",
+          "fields": [
+            "gateway"
+          ]
+        },
+        {
+          "name": "applyMembershipChange",
+          "fields": [
+            "gateway"
+          ]
+        }
+      ],
+      "pairs": 3,
+      "shared_pairs": 3,
+      "eligible_cohesion": false,
+      "cohesion": 1,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Injectable",
+        "InternalEvent",
+        "TeamActivityMessage",
+        "TeamActivityPayload"
+      ],
+      "cbo": 4,
+      "high_coupling": false
+    },
+    {
+      "file": "src/events/hmac.guard.ts",
+      "name": "HmacGuard",
+      "line": 31,
+      "fields": [
+        "config",
+        "replayStore"
+      ],
+      "methods": [
+        {
+          "name": "canActivate",
+          "fields": [
+            "config",
+            "replayStore"
+          ]
+        }
+      ],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "CanActivate",
+        "ExecutionContext",
+        "Inject",
+        "Injectable",
+        "Math",
+        "NONCE_HEADER",
+        "NONCE_PATTERN",
+        "REALTIME_CONFIG",
+        "RawBodyRequest",
+        "RealtimeConfig",
+        "Request",
+        "SIGNATURE_HEADER",
+        "TIMESTAMP_HEADER",
+        "UnauthorizedException"
+      ],
+      "cbo": 14,
+      "high_coupling": true
+    },
+    {
+      "file": "src/health/health.controller.ts",
+      "name": "HealthController",
+      "line": 5,
+      "fields": [
+        "registry"
+      ],
+      "methods": [
+        {
+          "name": "health",
+          "fields": [
+            "registry"
+          ]
+        }
+      ],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Controller",
+        "Get",
+        "Math"
+      ],
+      "cbo": 3,
+      "high_coupling": false
+    },
+    {
+      "file": "src/health/health.module.ts",
+      "name": "HealthModule",
+      "line": 6,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Module"
+      ],
+      "cbo": 1,
+      "high_coupling": false
+    },
+    {
+      "file": "src/notifications/notification.factory.ts",
+      "name": "NotificationFactory",
+      "line": 33,
+      "fields": [],
+      "methods": [
+        {
+          "name": "build",
+          "fields": []
+        }
+      ],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Injectable",
+        "InternalEvent",
+        "NotificationPayload"
+      ],
+      "cbo": 3,
+      "high_coupling": false
+    },
+    {
+      "file": "src/notifications/notifications.module.ts",
+      "name": "NotificationsModule",
+      "line": 5,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Module"
+      ],
+      "cbo": 1,
+      "high_coupling": false
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "name": "ConnectionLimiterService",
+      "line": 12,
+      "fields": [
+        "attempts",
+        "config",
+        "messages",
+        "registry"
+      ],
+      "methods": [
+        {
+          "name": "allowAttempt",
+          "fields": [
+            "attempts",
+            "config"
+          ]
+        },
+        {
+          "name": "allowConnection",
+          "fields": [
+            "config",
+            "registry"
+          ]
+        },
+        {
+          "name": "allowMessage",
+          "fields": [
+            "config",
+            "messages"
+          ]
+        },
+        {
+          "name": "forgetSocket",
+          "fields": [
+            "messages"
+          ]
+        }
+      ],
+      "pairs": 6,
+      "shared_pairs": 4,
+      "eligible_cohesion": true,
+      "cohesion": 0.6666666666666666,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "ATTEMPT_WINDOW_MS",
+        "Inject",
+        "Injectable",
+        "REALTIME_CONFIG",
+        "RealtimeConfig"
+      ],
+      "cbo": 5,
+      "high_coupling": false
+    },
+    {
+      "file": "src/realtime/realtime-io.adapter.ts",
+      "name": "RealtimeIoAdapter",
+      "line": 20,
+      "fields": [
+        "config"
+      ],
+      "methods": [
+        {
+          "name": "createIOServer",
+          "fields": [
+            "config"
+          ]
+        },
+        {
+          "name": "originAllowed",
+          "fields": [
+            "config"
+          ]
+        }
+      ],
+      "pairs": 1,
+      "shared_pairs": 1,
+      "eligible_cohesion": false,
+      "cohesion": 1,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "INestApplicationContext",
+        "IncomingMessage",
+        "IoAdapter",
+        "RealtimeConfig",
+        "Server",
+        "ServerOptions",
+        "URL"
+      ],
+      "cbo": 7,
+      "high_coupling": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "RealtimeGateway",
+      "line": 97,
+      "fields": [
+        "config",
+        "identityVerifier",
+        "jwtVerifier",
+        "limiter",
+        "logger",
+        "presenceTimers",
+        "registry",
+        "server"
+      ],
+      "methods": [
+        {
+          "name": "afterInit",
+          "fields": [
+            "logger"
+          ]
+        },
+        {
+          "name": "handleConnection",
+          "fields": [
+            "limiter",
+            "logger",
+            "registry"
+          ]
+        },
+        {
+          "name": "handleDisconnect",
+          "fields": [
+            "limiter",
+            "registry"
+          ]
+        },
+        {
+          "name": "onModuleDestroy",
+          "fields": [
+            "presenceTimers"
+          ]
+        },
+        {
+          "name": "emitToUser",
+          "fields": [
+            "registry",
+            "server"
+          ]
+        },
+        {
+          "name": "emitTeamActivity",
+          "fields": [
+            "registry",
+            "server"
+          ]
+        },
+        {
+          "name": "syncTeamMembership",
+          "fields": [
+            "identityVerifier",
+            "registry",
+            "server"
+          ]
+        },
+        {
+          "name": "removeUserFromTeam",
+          "fields": [
+            "identityVerifier",
+            "registry",
+            "server"
+          ]
+        },
+        {
+          "name": "presenceMessage",
+          "fields": [
+            "registry"
+          ]
+        },
+        {
+          "name": "schedulePresence",
+          "fields": [
+            "config",
+            "presenceTimers"
+          ]
+        },
+        {
+          "name": "broadcastPresence",
+          "fields": [
+            "server"
+          ]
+        },
+        {
+          "name": "authenticate",
+          "fields": [
+            "identityVerifier",
+            "jwtVerifier",
+            "limiter"
+          ]
+        }
+      ],
+      "pairs": 66,
+      "shared_pairs": 31,
+      "eligible_cohesion": true,
+      "cohesion": 0.4696969696969697,
+      "low_cohesion": true,
+      "external_identifiers": [
+        "Inject",
+        "Logger",
+        "NotificationPayload",
+        "OnGatewayConnection",
+        "OnGatewayDisconnect",
+        "OnGatewayInit",
+        "OnModuleDestroy",
+        "PresenceMessage",
+        "REALTIME_CONFIG",
+        "RealtimeConfig",
+        "Server",
+        "Socket",
+        "SocketData",
+        "TeamActivityMessage",
+        "WebSocketGateway",
+        "WebSocketServer"
+      ],
+      "cbo": 16,
+      "high_coupling": true
+    },
+    {
+      "file": "src/realtime/realtime.module.ts",
+      "name": "RealtimeModule",
+      "line": 8,
+      "fields": [],
+      "methods": [],
+      "pairs": 0,
+      "shared_pairs": 0,
+      "eligible_cohesion": false,
+      "cohesion": null,
+      "low_cohesion": false,
+      "external_identifiers": [
+        "Module"
+      ],
+      "cbo": 1,
+      "high_coupling": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "SocketRegistryService",
+      "line": 36,
+      "fields": [
+        "byIp",
+        "byUser",
+        "sockets"
+      ],
+      "methods": [
+        {
+          "name": "register",
+          "fields": [
+            "byIp",
+            "byUser",
+            "sockets"
+          ]
+        },
+        {
+          "name": "unregister",
+          "fields": [
+            "byIp",
+            "byUser",
+            "sockets"
+          ]
+        },
+        {
+          "name": "stateFor",
+          "fields": [
+            "sockets"
+          ]
+        },
+        {
+          "name": "socketIdsForUser",
+          "fields": [
+            "byUser"
+          ]
+        },
+        {
+          "name": "connectionsForUser",
+          "fields": [
+            "byUser"
+          ]
+        },
+        {
+          "name": "connectionsForIp",
+          "fields": [
+            "byIp"
+          ]
+        },
+        {
+          "name": "isUserConnected",
+          "fields": []
+        },
+        {
+          "name": "teamIdForUser",
+          "fields": [
+            "byUser",
+            "sockets"
+          ]
+        },
+        {
+          "name": "roleForUser",
+          "fields": [
+            "byUser",
+            "sockets"
+          ]
+        },
+        {
+          "name": "onlineMembers",
+          "fields": [
+            "sockets"
+          ]
+        },
+        {
+          "name": "teamConnections",
+          "fields": [
+            "sockets"
+          ]
+        },
+        {
+          "name": "updateTeamForUser",
+          "fields": [
+            "byUser",
+            "sockets"
+          ]
+        },
+        {
+          "name": "totalConnections",
+          "fields": [
+            "sockets"
+          ]
+        },
+        {
+          "name": "totalUsers",
+          "fields": [
+            "byUser"
+          ]
+        },
+        {
+          "name": "addToIndex",
+          "fields": []
+        },
+        {
+          "name": "removeFromIndex",
+          "fields": []
+        }
+      ],
+      "pairs": 120,
+      "shared_pairs": 56,
+      "eligible_cohesion": true,
+      "cohesion": 0.4666666666666667,
+      "low_cohesion": true,
+      "external_identifiers": [
+        "ConnectionState",
+        "Injectable",
+        "TeamPresence"
+      ],
+      "cbo": 3,
+      "high_coupling": false
+    }
+  ],
+  "functions": [
+    {
+      "file": "src/app.factory.ts",
+      "name": "createApplication",
+      "start": 12,
+      "end": 30,
+      "nonempty_lines": 18,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/auth/auth.types.ts",
+      "name": "constructor",
+      "start": 26,
+      "end": 32,
+      "nonempty_lines": 7,
+      "parameters": 2,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/auth/identity-verifier.service.ts",
+      "name": "constructor",
+      "start": 36,
+      "end": 38,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/auth/identity-verifier.service.ts",
+      "name": "verify",
+      "start": 40,
+      "end": 62,
+      "nonempty_lines": 21,
+      "parameters": 1,
+      "complexity": 7,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/auth/identity-verifier.service.ts",
+      "name": "fetchIdentity",
+      "start": 64,
+      "end": 141,
+      "nonempty_lines": 72,
+      "parameters": 2,
+      "complexity": 14,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/auth/identity-verifier.service.ts",
+      "name": "invalidate",
+      "start": 144,
+      "end": 147,
+      "nonempty_lines": 4,
+      "parameters": 1,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/auth/identity-verifier.service.ts",
+      "name": "parseTeamId",
+      "start": 149,
+      "end": 160,
+      "nonempty_lines": 12,
+      "parameters": 1,
+      "complexity": 7,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/auth/identity-verifier.service.ts",
+      "name": "parseRole",
+      "start": 162,
+      "end": 168,
+      "nonempty_lines": 7,
+      "parameters": 1,
+      "complexity": 6,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/auth/jwt-verifier.service.ts",
+      "name": "constructor",
+      "start": 13,
+      "end": 15,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/auth/jwt-verifier.service.ts",
+      "name": "verify",
+      "start": 17,
+      "end": 73,
+      "nonempty_lines": 52,
+      "parameters": 1,
+      "complexity": 19,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/common/hmac.ts",
+      "name": "payloadBuffer",
+      "start": 5,
+      "end": 9,
+      "nonempty_lines": 5,
+      "parameters": 3,
+      "complexity": 2,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/common/hmac.ts",
+      "name": "signHmac",
+      "start": 16,
+      "end": 25,
+      "nonempty_lines": 10,
+      "parameters": 4,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/common/hmac.ts",
+      "name": "verifyHmac",
+      "start": 27,
+      "end": 42,
+      "nonempty_lines": 16,
+      "parameters": 5,
+      "complexity": 3,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/common/replay-store.service.ts",
+      "name": "remember",
+      "start": 15,
+      "end": 25,
+      "nonempty_lines": 11,
+      "parameters": 3,
+      "complexity": 4,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/common/replay-store.service.ts",
+      "name": "has",
+      "start": 27,
+      "end": 30,
+      "nonempty_lines": 4,
+      "parameters": 2,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/common/replay-store.service.ts",
+      "name": "clear",
+      "start": 32,
+      "end": 34,
+      "nonempty_lines": 3,
+      "parameters": 0,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/common/replay-store.service.ts",
+      "name": "prune",
+      "start": 36,
+      "end": 40,
+      "nonempty_lines": 5,
+      "parameters": 1,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/config/config.module.ts",
+      "name": "<callback:10>",
+      "start": 10,
+      "end": 10,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/config/realtime-config.ts",
+      "name": "readSecret",
+      "start": 31,
+      "end": 42,
+      "nonempty_lines": 11,
+      "parameters": 3,
+      "complexity": 6,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/config/realtime-config.ts",
+      "name": "asInt",
+      "start": 44,
+      "end": 51,
+      "nonempty_lines": 8,
+      "parameters": 2,
+      "complexity": 5,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/config/realtime-config.ts",
+      "name": "asBool",
+      "start": 53,
+      "end": 56,
+      "nonempty_lines": 4,
+      "parameters": 2,
+      "complexity": 3,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/config/realtime-config.ts",
+      "name": "requiredSecret",
+      "start": 58,
+      "end": 68,
+      "nonempty_lines": 11,
+      "parameters": 2,
+      "complexity": 3,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/config/realtime-config.ts",
+      "name": "loadConfig",
+      "start": 74,
+      "end": 133,
+      "nonempty_lines": 57,
+      "parameters": 1,
+      "complexity": 9,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/config/realtime-config.ts",
+      "name": "<callback:82>",
+      "start": 82,
+      "end": 82,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "isPlainObject",
+      "start": 20,
+      "end": 27,
+      "nonempty_lines": 8,
+      "parameters": 1,
+      "complexity": 4,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "fail",
+      "start": 29,
+      "end": 31,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "exactKeys",
+      "start": 33,
+      "end": 48,
+      "nonempty_lines": 16,
+      "parameters": 4,
+      "complexity": 6,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "text",
+      "start": 50,
+      "end": 67,
+      "nonempty_lines": 18,
+      "parameters": 3,
+      "complexity": 6,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "positiveInt",
+      "start": 69,
+      "end": 79,
+      "nonempty_lines": 11,
+      "parameters": 2,
+      "complexity": 5,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "userRef",
+      "start": 81,
+      "end": 87,
+      "nonempty_lines": 7,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "teamRef",
+      "start": 89,
+      "end": 100,
+      "nonempty_lines": 12,
+      "parameters": 2,
+      "complexity": 4,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "mapRef",
+      "start": 102,
+      "end": 108,
+      "nonempty_lines": 7,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "lineupRef",
+      "start": 110,
+      "end": 117,
+      "nonempty_lines": 8,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "internalPath",
+      "start": 119,
+      "end": 125,
+      "nonempty_lines": 7,
+      "parameters": 2,
+      "complexity": 3,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "metadataObject",
+      "start": 127,
+      "end": 140,
+      "nonempty_lines": 14,
+      "parameters": 2,
+      "complexity": 4,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "validatePayload",
+      "start": 142,
+      "end": 281,
+      "nonempty_lines": 140,
+      "parameters": 2,
+      "complexity": 9,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event-payload.validator.ts",
+      "name": "validateInternalEvent",
+      "start": 288,
+      "end": 363,
+      "nonempty_lines": 70,
+      "parameters": 3,
+      "complexity": 16,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/event.dto.ts",
+      "name": "<callback:65>",
+      "start": 65,
+      "end": 65,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/events/event.types.ts",
+      "name": "constructor",
+      "start": 119,
+      "end": 122,
+      "nonempty_lines": 4,
+      "parameters": 1,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/events/events.controller.ts",
+      "name": "constructor",
+      "start": 24,
+      "end": 28,
+      "nonempty_lines": 5,
+      "parameters": 3,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/events/events.controller.ts",
+      "name": "receive",
+      "start": 30,
+      "end": 72,
+      "nonempty_lines": 39,
+      "parameters": 1,
+      "complexity": 6,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/events/events.service.ts",
+      "name": "stringMetadata",
+      "start": 10,
+      "end": 12,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 3,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/events.service.ts",
+      "name": "intMetadata",
+      "start": 14,
+      "end": 18,
+      "nonempty_lines": 5,
+      "parameters": 1,
+      "complexity": 4,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/events.service.ts",
+      "name": "constructor",
+      "start": 22,
+      "end": 25,
+      "nonempty_lines": 4,
+      "parameters": 2,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/events/events.service.ts",
+      "name": "dispatch",
+      "start": 36,
+      "end": 47,
+      "nonempty_lines": 11,
+      "parameters": 1,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/events/events.service.ts",
+      "name": "dispatchActivity",
+      "start": 49,
+      "end": 73,
+      "nonempty_lines": 24,
+      "parameters": 2,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/events/events.service.ts",
+      "name": "applyMembershipChange",
+      "start": 75,
+      "end": 111,
+      "nonempty_lines": 37,
+      "parameters": 1,
+      "complexity": 7,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/events/hmac.guard.ts",
+      "name": "headerValue",
+      "start": 20,
+      "end": 25,
+      "nonempty_lines": 6,
+      "parameters": 2,
+      "complexity": 4,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/events/hmac.guard.ts",
+      "name": "constructor",
+      "start": 33,
+      "end": 36,
+      "nonempty_lines": 4,
+      "parameters": 2,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/events/hmac.guard.ts",
+      "name": "canActivate",
+      "start": 38,
+      "end": 87,
+      "nonempty_lines": 43,
+      "parameters": 1,
+      "complexity": 11,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/health/health.controller.ts",
+      "name": "constructor",
+      "start": 7,
+      "end": 7,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/health/health.controller.ts",
+      "name": "health",
+      "start": 9,
+      "end": 20,
+      "nonempty_lines": 12,
+      "parameters": 0,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/main.ts",
+      "name": "bootstrap",
+      "start": 6,
+      "end": 17,
+      "nonempty_lines": 12,
+      "parameters": 0,
+      "complexity": 3,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/main.ts",
+      "name": "<callback:20>",
+      "start": 20,
+      "end": 23,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/notifications/notification.factory.ts",
+      "name": "grenadeType",
+      "start": 21,
+      "end": 23,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 2,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/notifications/notification.factory.ts",
+      "name": "role",
+      "start": 25,
+      "end": 27,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 2,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/notifications/notification.factory.ts",
+      "name": "build",
+      "start": 35,
+      "end": 181,
+      "nonempty_lines": 140,
+      "parameters": 1,
+      "complexity": 8,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "name": "constructor",
+      "start": 17,
+      "end": 20,
+      "nonempty_lines": 4,
+      "parameters": 2,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "name": "allowAttempt",
+      "start": 23,
+      "end": 34,
+      "nonempty_lines": 12,
+      "parameters": 2,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "name": "<callback:25>",
+      "start": 25,
+      "end": 25,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "name": "allowConnection",
+      "start": 36,
+      "end": 42,
+      "nonempty_lines": 7,
+      "parameters": 2,
+      "complexity": 2,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "name": "allowMessage",
+      "start": 44,
+      "end": 55,
+      "nonempty_lines": 12,
+      "parameters": 2,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "name": "<callback:46>",
+      "start": 46,
+      "end": 46,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/connection-limiter.service.ts",
+      "name": "forgetSocket",
+      "start": 57,
+      "end": 59,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime-io.adapter.ts",
+      "name": "header",
+      "start": 9,
+      "end": 14,
+      "nonempty_lines": 6,
+      "parameters": 2,
+      "complexity": 4,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime-io.adapter.ts",
+      "name": "constructor",
+      "start": 21,
+      "end": 26,
+      "nonempty_lines": 6,
+      "parameters": 2,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime-io.adapter.ts",
+      "name": "createIOServer",
+      "start": 28,
+      "end": 43,
+      "nonempty_lines": 16,
+      "parameters": 2,
+      "complexity": 2,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime-io.adapter.ts",
+      "name": "<callback:35>",
+      "start": 35,
+      "end": 41,
+      "nonempty_lines": 7,
+      "parameters": 2,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/realtime-io.adapter.ts",
+      "name": "originAllowed",
+      "start": 45,
+      "end": 57,
+      "nonempty_lines": 12,
+      "parameters": 1,
+      "complexity": 6,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "clientIp",
+      "start": 58,
+      "end": 72,
+      "nonempty_lines": 14,
+      "parameters": 1,
+      "complexity": 9,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "socketError",
+      "start": 74,
+      "end": 78,
+      "nonempty_lines": 5,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "expireSession",
+      "start": 81,
+      "end": 95,
+      "nonempty_lines": 15,
+      "parameters": 2,
+      "complexity": 2,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "<callback:83>",
+      "start": 83,
+      "end": 92,
+      "nonempty_lines": 10,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "<callback:93>",
+      "start": 93,
+      "end": 93,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "constructor",
+      "start": 111,
+      "end": 117,
+      "nonempty_lines": 7,
+      "parameters": 5,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "afterInit",
+      "start": 119,
+      "end": 132,
+      "nonempty_lines": 14,
+      "parameters": 1,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "<callback:120>",
+      "start": 120,
+      "end": 131,
+      "nonempty_lines": 12,
+      "parameters": 2,
+      "complexity": 3,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "<callback:122>",
+      "start": 122,
+      "end": 122,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "<callback:123>",
+      "start": 123,
+      "end": 130,
+      "nonempty_lines": 8,
+      "parameters": 1,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "handleConnection",
+      "start": 134,
+      "end": 176,
+      "nonempty_lines": 39,
+      "parameters": 1,
+      "complexity": 7,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "<callback:155>",
+      "start": 155,
+      "end": 160,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "handleDisconnect",
+      "start": 178,
+      "end": 184,
+      "nonempty_lines": 7,
+      "parameters": 1,
+      "complexity": 5,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "onModuleDestroy",
+      "start": 186,
+      "end": 189,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 2,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "emitToUser",
+      "start": 191,
+      "end": 195,
+      "nonempty_lines": 5,
+      "parameters": 2,
+      "complexity": 2,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "emitTeamActivity",
+      "start": 201,
+      "end": 204,
+      "nonempty_lines": 4,
+      "parameters": 2,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "syncTeamMembership",
+      "start": 211,
+      "end": 236,
+      "nonempty_lines": 24,
+      "parameters": 3,
+      "complexity": 7,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "removeUserFromTeam",
+      "start": 239,
+      "end": 248,
+      "nonempty_lines": 9,
+      "parameters": 2,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "presenceMessage",
+      "start": 250,
+      "end": 256,
+      "nonempty_lines": 7,
+      "parameters": 1,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "schedulePresence",
+      "start": 258,
+      "end": 273,
+      "nonempty_lines": 15,
+      "parameters": 1,
+      "complexity": 4,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "<callback:267>",
+      "start": 267,
+      "end": 270,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "broadcastPresence",
+      "start": 275,
+      "end": 280,
+      "nonempty_lines": 6,
+      "parameters": 1,
+      "complexity": 2,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/realtime.gateway.ts",
+      "name": "authenticate",
+      "start": 282,
+      "end": 319,
+      "nonempty_lines": 32,
+      "parameters": 1,
+      "complexity": 11,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "userRoom",
+      "start": 3,
+      "end": 5,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "teamRoom",
+      "start": 7,
+      "end": 9,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "register",
+      "start": 42,
+      "end": 60,
+      "nonempty_lines": 19,
+      "parameters": 6,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "unregister",
+      "start": 62,
+      "end": 69,
+      "nonempty_lines": 8,
+      "parameters": 1,
+      "complexity": 2,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "stateFor",
+      "start": 71,
+      "end": 73,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "socketIdsForUser",
+      "start": 75,
+      "end": 77,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 2,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "connectionsForUser",
+      "start": 79,
+      "end": 81,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "connectionsForIp",
+      "start": 83,
+      "end": 85,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "isUserConnected",
+      "start": 87,
+      "end": 89,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "teamIdForUser",
+      "start": 91,
+      "end": 97,
+      "nonempty_lines": 7,
+      "parameters": 1,
+      "complexity": 5,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "roleForUser",
+      "start": 99,
+      "end": 105,
+      "nonempty_lines": 7,
+      "parameters": 1,
+      "complexity": 4,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "onlineMembers",
+      "start": 108,
+      "end": 120,
+      "nonempty_lines": 13,
+      "parameters": 1,
+      "complexity": 4,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "<callback:119>",
+      "start": 119,
+      "end": 119,
+      "nonempty_lines": 1,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "teamConnections",
+      "start": 122,
+      "end": 128,
+      "nonempty_lines": 7,
+      "parameters": 1,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "updateTeamForUser",
+      "start": 131,
+      "end": 149,
+      "nonempty_lines": 19,
+      "parameters": 3,
+      "complexity": 8,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "totalConnections",
+      "start": 151,
+      "end": 153,
+      "nonempty_lines": 3,
+      "parameters": 0,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "totalUsers",
+      "start": 155,
+      "end": 157,
+      "nonempty_lines": 3,
+      "parameters": 0,
+      "complexity": 1,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "addToIndex",
+      "start": 159,
+      "end": 167,
+      "nonempty_lines": 9,
+      "parameters": 3,
+      "complexity": 2,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "src/realtime/socket-registry.service.ts",
+      "name": "removeFromIndex",
+      "start": 169,
+      "end": 178,
+      "nonempty_lines": 10,
+      "parameters": 3,
+      "complexity": 3,
+      "method": true,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "makeToken",
+      "start": 26,
+      "end": 42,
+      "nonempty_lines": 17,
+      "parameters": 3,
+      "complexity": 2,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "connect",
+      "start": 44,
+      "end": 62,
+      "nonempty_lines": 19,
+      "parameters": 2,
+      "complexity": 2,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:48>",
+      "start": 48,
+      "end": 61,
+      "nonempty_lines": 14,
+      "parameters": 2,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:59>",
+      "start": 59,
+      "end": 59,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:60>",
+      "start": 60,
+      "end": 60,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "connectError",
+      "start": 64,
+      "end": 82,
+      "nonempty_lines": 19,
+      "parameters": 2,
+      "complexity": 2,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:68>",
+      "start": 68,
+      "end": 81,
+      "nonempty_lines": 14,
+      "parameters": 2,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:79>",
+      "start": 79,
+      "end": 79,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:80>",
+      "start": 80,
+      "end": 80,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "nextNotification",
+      "start": 84,
+      "end": 99,
+      "nonempty_lines": 16,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:88>",
+      "start": 88,
+      "end": 98,
+      "nonempty_lines": 11,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:89>",
+      "start": 89,
+      "end": 92,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "handler",
+      "start": 93,
+      "end": 96,
+      "nonempty_lines": 4,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "expectNoNotification",
+      "start": 101,
+      "end": 114,
+      "nonempty_lines": 14,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:102>",
+      "start": 102,
+      "end": 113,
+      "nonempty_lines": 12,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:103>",
+      "start": 103,
+      "end": 106,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "handler",
+      "start": 107,
+      "end": 111,
+      "nonempty_lines": 5,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "postEvent",
+      "start": 116,
+      "end": 125,
+      "nonempty_lines": 10,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "waitFor",
+      "start": 127,
+      "end": 134,
+      "nonempty_lines": 8,
+      "parameters": 2,
+      "complexity": 3,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:131>",
+      "start": 131,
+      "end": 131,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:136>",
+      "start": 136,
+      "end": 150,
+      "nonempty_lines": 14,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:152>",
+      "start": 152,
+      "end": 155,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:157>",
+      "start": 157,
+      "end": 169,
+      "nonempty_lines": 13,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:158>",
+      "start": 158,
+      "end": 168,
+      "nonempty_lines": 11,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:171>",
+      "start": 171,
+      "end": 241,
+      "nonempty_lines": 64,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:172>",
+      "start": 172,
+      "end": 177,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:179>",
+      "start": 179,
+      "end": 184,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:186>",
+      "start": 186,
+      "end": 190,
+      "nonempty_lines": 5,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:192>",
+      "start": 192,
+      "end": 197,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:199>",
+      "start": 199,
+      "end": 208,
+      "nonempty_lines": 10,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:210>",
+      "start": 210,
+      "end": 221,
+      "nonempty_lines": 11,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:223>",
+      "start": 223,
+      "end": 240,
+      "nonempty_lines": 18,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:243>",
+      "start": 243,
+      "end": 374,
+      "nonempty_lines": 118,
+      "parameters": 0,
+      "complexity": 6,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:244>",
+      "start": 244,
+      "end": 264,
+      "nonempty_lines": 18,
+      "parameters": 0,
+      "complexity": 4,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:266>",
+      "start": 266,
+      "end": 272,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:274>",
+      "start": 274,
+      "end": 303,
+      "nonempty_lines": 27,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:305>",
+      "start": 305,
+      "end": 320,
+      "nonempty_lines": 15,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:308>",
+      "start": 308,
+      "end": 308,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:310>",
+      "start": 310,
+      "end": 310,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:313>",
+      "start": 313,
+      "end": 313,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:319>",
+      "start": 319,
+      "end": 319,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:322>",
+      "start": 322,
+      "end": 334,
+      "nonempty_lines": 13,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:324>",
+      "start": 324,
+      "end": 331,
+      "nonempty_lines": 8,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:325>",
+      "start": 325,
+      "end": 325,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:326>",
+      "start": 326,
+      "end": 329,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:333>",
+      "start": 333,
+      "end": 333,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:336>",
+      "start": 336,
+      "end": 365,
+      "nonempty_lines": 29,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:341>",
+      "start": 341,
+      "end": 353,
+      "nonempty_lines": 13,
+      "parameters": 2,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:342>",
+      "start": 342,
+      "end": 347,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:348>",
+      "start": 348,
+      "end": 351,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:358>",
+      "start": 358,
+      "end": 358,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/app.e2e.spec.ts",
+      "name": "<callback:367>",
+      "start": 367,
+      "end": 373,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "makeToken",
+      "start": 35,
+      "end": 42,
+      "nonempty_lines": 8,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "openSocket",
+      "start": 44,
+      "end": 55,
+      "nonempty_lines": 12,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "waitForConnect",
+      "start": 57,
+      "end": 69,
+      "nonempty_lines": 13,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:58>",
+      "start": 58,
+      "end": 68,
+      "nonempty_lines": 11,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:59>",
+      "start": 59,
+      "end": 59,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:60>",
+      "start": 60,
+      "end": 63,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:64>",
+      "start": 64,
+      "end": 67,
+      "nonempty_lines": 4,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "nextEvent",
+      "start": 71,
+      "end": 87,
+      "nonempty_lines": 17,
+      "parameters": 3,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:76>",
+      "start": 76,
+      "end": 86,
+      "nonempty_lines": 11,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:77>",
+      "start": 77,
+      "end": 80,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "handler",
+      "start": 81,
+      "end": 84,
+      "nonempty_lines": 4,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "expectNoEvent",
+      "start": 89,
+      "end": 102,
+      "nonempty_lines": 14,
+      "parameters": 3,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:90>",
+      "start": 90,
+      "end": 101,
+      "nonempty_lines": 12,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:91>",
+      "start": 91,
+      "end": 94,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "handler",
+      "start": 95,
+      "end": 99,
+      "nonempty_lines": 5,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "postEvent",
+      "start": 104,
+      "end": 110,
+      "nonempty_lines": 7,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "connect",
+      "start": 112,
+      "end": 126,
+      "nonempty_lines": 15,
+      "parameters": 3,
+      "complexity": 3,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:128>",
+      "start": 128,
+      "end": 180,
+      "nonempty_lines": 51,
+      "parameters": 0,
+      "complexity": 6,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:129>",
+      "start": 129,
+      "end": 158,
+      "nonempty_lines": 30,
+      "parameters": 2,
+      "complexity": 6,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:131>",
+      "start": 131,
+      "end": 133,
+      "nonempty_lines": 3,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:134>",
+      "start": 134,
+      "end": 157,
+      "nonempty_lines": 24,
+      "parameters": 0,
+      "complexity": 6,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:159>",
+      "start": 159,
+      "end": 160,
+      "nonempty_lines": 2,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:182>",
+      "start": 182,
+      "end": 186,
+      "nonempty_lines": 5,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:185>",
+      "start": 185,
+      "end": 185,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:185>",
+      "start": 185,
+      "end": 185,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:188>",
+      "start": 188,
+      "end": 256,
+      "nonempty_lines": 63,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:189>",
+      "start": 189,
+      "end": 255,
+      "nonempty_lines": 61,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:258>",
+      "start": 258,
+      "end": 414,
+      "nonempty_lines": 138,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:259>",
+      "start": 259,
+      "end": 336,
+      "nonempty_lines": 69,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/e2e/presence.e2e.spec.ts",
+      "name": "<callback:338>",
+      "start": 338,
+      "end": 413,
+      "nonempty_lines": 67,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "baseConfig",
+      "start": 9,
+      "end": 38,
+      "nonempty_lines": 30,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "team",
+      "start": 40,
+      "end": 42,
+      "nonempty_lines": 3,
+      "parameters": 3,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "user",
+      "start": 44,
+      "end": 46,
+      "nonempty_lines": 3,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "invitationCreatedEvent",
+      "start": 48,
+      "end": 68,
+      "nonempty_lines": 21,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "invitationAcceptedEvent",
+      "start": 70,
+      "end": 87,
+      "nonempty_lines": 18,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "invitationRejectedEvent",
+      "start": 89,
+      "end": 105,
+      "nonempty_lines": 17,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "proposalCreatedEvent",
+      "start": 107,
+      "end": 125,
+      "nonempty_lines": 19,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "proposalApprovedEvent",
+      "start": 127,
+      "end": 145,
+      "nonempty_lines": 19,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "proposalRejectedEvent",
+      "start": 147,
+      "end": 164,
+      "nonempty_lines": 18,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "teamActivityEvent",
+      "start": 166,
+      "end": 195,
+      "nonempty_lines": 30,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/helpers/fixtures.ts",
+      "name": "signedBody",
+      "start": 197,
+      "end": 221,
+      "nonempty_lines": 25,
+      "parameters": 2,
+      "complexity": 4,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:7>",
+      "start": 7,
+      "end": 7,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:9>",
+      "start": 9,
+      "end": 44,
+      "nonempty_lines": 30,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:10>",
+      "start": 10,
+      "end": 10,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:12>",
+      "start": 12,
+      "end": 27,
+      "nonempty_lines": 14,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:14>",
+      "start": 14,
+      "end": 14,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:15>",
+      "start": 15,
+      "end": 15,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:29>",
+      "start": 29,
+      "end": 43,
+      "nonempty_lines": 13,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:31>",
+      "start": 31,
+      "end": 31,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/bootstrap.spec.ts",
+      "name": "<callback:32>",
+      "start": 32,
+      "end": 32,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:10>",
+      "start": 10,
+      "end": 91,
+      "nonempty_lines": 76,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:11>",
+      "start": 11,
+      "end": 27,
+      "nonempty_lines": 16,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:29>",
+      "start": 29,
+      "end": 45,
+      "nonempty_lines": 17,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:47>",
+      "start": 47,
+      "end": 57,
+      "nonempty_lines": 11,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:48>",
+      "start": 48,
+      "end": 48,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:51>",
+      "start": 51,
+      "end": 55,
+      "nonempty_lines": 5,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:59>",
+      "start": 59,
+      "end": 67,
+      "nonempty_lines": 9,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:60>",
+      "start": 60,
+      "end": 65,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:69>",
+      "start": 69,
+      "end": 79,
+      "nonempty_lines": 11,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:81>",
+      "start": 81,
+      "end": 90,
+      "nonempty_lines": 10,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/config.spec.ts",
+      "name": "<callback:82>",
+      "start": 82,
+      "end": 85,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/connection-limiter.spec.ts",
+      "name": "<callback:5>",
+      "start": 5,
+      "end": 59,
+      "nonempty_lines": 51,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/connection-limiter.spec.ts",
+      "name": "build",
+      "start": 6,
+      "end": 13,
+      "nonempty_lines": 8,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/unit/connection-limiter.spec.ts",
+      "name": "<callback:15>",
+      "start": 15,
+      "end": 23,
+      "nonempty_lines": 9,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/connection-limiter.spec.ts",
+      "name": "<callback:25>",
+      "start": 25,
+      "end": 37,
+      "nonempty_lines": 13,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/connection-limiter.spec.ts",
+      "name": "<callback:39>",
+      "start": 39,
+      "end": 47,
+      "nonempty_lines": 9,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/connection-limiter.spec.ts",
+      "name": "<callback:49>",
+      "start": 49,
+      "end": 58,
+      "nonempty_lines": 10,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:17>",
+      "start": 17,
+      "end": 158,
+      "nonempty_lines": 134,
+      "parameters": 0,
+      "complexity": 3,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:26>",
+      "start": 26,
+      "end": 30,
+      "nonempty_lines": 5,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:32>",
+      "start": 32,
+      "end": 37,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:39>",
+      "start": 39,
+      "end": 48,
+      "nonempty_lines": 10,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:50>",
+      "start": 50,
+      "end": 60,
+      "nonempty_lines": 11,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:62>",
+      "start": 62,
+      "end": 84,
+      "nonempty_lines": 23,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:86>",
+      "start": 86,
+      "end": 105,
+      "nonempty_lines": 20,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:107>",
+      "start": 107,
+      "end": 119,
+      "nonempty_lines": 13,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:121>",
+      "start": 121,
+      "end": 124,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/event-validator.spec.ts",
+      "name": "<callback:126>",
+      "start": 126,
+      "end": 157,
+      "nonempty_lines": 32,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/events-service.spec.ts",
+      "name": "build",
+      "start": 10,
+      "end": 27,
+      "nonempty_lines": 18,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/unit/events-service.spec.ts",
+      "name": "<callback:29>",
+      "start": 29,
+      "end": 109,
+      "nonempty_lines": 72,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/events-service.spec.ts",
+      "name": "<callback:30>",
+      "start": 30,
+      "end": 38,
+      "nonempty_lines": 8,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/events-service.spec.ts",
+      "name": "<callback:40>",
+      "start": 40,
+      "end": 56,
+      "nonempty_lines": 16,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/events-service.spec.ts",
+      "name": "<callback:58>",
+      "start": 58,
+      "end": 75,
+      "nonempty_lines": 17,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/events-service.spec.ts",
+      "name": "<callback:77>",
+      "start": 77,
+      "end": 93,
+      "nonempty_lines": 16,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/events-service.spec.ts",
+      "name": "<callback:95>",
+      "start": 95,
+      "end": 108,
+      "nonempty_lines": 13,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/hmac.spec.ts",
+      "name": "<callback:6>",
+      "start": 6,
+      "end": 35,
+      "nonempty_lines": 29,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/hmac.spec.ts",
+      "name": "<callback:7>",
+      "start": 7,
+      "end": 27,
+      "nonempty_lines": 21,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/hmac.spec.ts",
+      "name": "<callback:29>",
+      "start": 29,
+      "end": 34,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "mockFetch",
+      "start": 7,
+      "end": 12,
+      "nonempty_lines": 6,
+      "parameters": 1,
+      "complexity": 2,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:8>",
+      "start": 8,
+      "end": 11,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:14>",
+      "start": 14,
+      "end": 152,
+      "nonempty_lines": 130,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:15>",
+      "start": 15,
+      "end": 17,
+      "nonempty_lines": 3,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:19>",
+      "start": 19,
+      "end": 29,
+      "nonempty_lines": 11,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:31>",
+      "start": 31,
+      "end": 52,
+      "nonempty_lines": 22,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:35>",
+      "start": 35,
+      "end": 41,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:54>",
+      "start": 54,
+      "end": 73,
+      "nonempty_lines": 20,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:58>",
+      "start": 58,
+      "end": 64,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:75>",
+      "start": 75,
+      "end": 93,
+      "nonempty_lines": 19,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:79>",
+      "start": 79,
+      "end": 85,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:95>",
+      "start": 95,
+      "end": 107,
+      "nonempty_lines": 13,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:99>",
+      "start": 99,
+      "end": 99,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:109>",
+      "start": 109,
+      "end": 115,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:117>",
+      "start": 117,
+      "end": 129,
+      "nonempty_lines": 13,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:131>",
+      "start": 131,
+      "end": 151,
+      "nonempty_lines": 20,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:133>",
+      "start": 133,
+      "end": 133,
+      "nonempty_lines": 1,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:134>",
+      "start": 134,
+      "end": 134,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/identity-verifier.spec.ts",
+      "name": "<callback:147>",
+      "start": 147,
+      "end": 147,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "token",
+      "start": 7,
+      "end": 12,
+      "nonempty_lines": 6,
+      "parameters": 2,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "claims",
+      "start": 14,
+      "end": 22,
+      "nonempty_lines": 9,
+      "parameters": 1,
+      "complexity": 1,
+      "method": false,
+      "callback": false
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:24>",
+      "start": 24,
+      "end": 97,
+      "nonempty_lines": 67,
+      "parameters": 0,
+      "complexity": 4,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:27>",
+      "start": 27,
+      "end": 33,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:35>",
+      "start": 35,
+      "end": 50,
+      "nonempty_lines": 15,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:39>",
+      "start": 39,
+      "end": 39,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:49>",
+      "start": 49,
+      "end": 49,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:52>",
+      "start": 52,
+      "end": 65,
+      "nonempty_lines": 14,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:67>",
+      "start": 67,
+      "end": 89,
+      "nonempty_lines": 22,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:84>",
+      "start": 84,
+      "end": 84,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:86>",
+      "start": 86,
+      "end": 87,
+      "nonempty_lines": 2,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/jwt-verifier.spec.ts",
+      "name": "<callback:91>",
+      "start": 91,
+      "end": 96,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/notification-factory.spec.ts",
+      "name": "<callback:11>",
+      "start": 11,
+      "end": 75,
+      "nonempty_lines": 60,
+      "parameters": 0,
+      "complexity": 4,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/notification-factory.spec.ts",
+      "name": "<callback:14>",
+      "start": 14,
+      "end": 23,
+      "nonempty_lines": 10,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/notification-factory.spec.ts",
+      "name": "<callback:25>",
+      "start": 25,
+      "end": 52,
+      "nonempty_lines": 28,
+      "parameters": 0,
+      "complexity": 3,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/notification-factory.spec.ts",
+      "name": "<callback:54>",
+      "start": 54,
+      "end": 59,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/notification-factory.spec.ts",
+      "name": "<callback:61>",
+      "start": 61,
+      "end": 67,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/notification-factory.spec.ts",
+      "name": "<callback:69>",
+      "start": 69,
+      "end": 74,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/replay-store.spec.ts",
+      "name": "<callback:3>",
+      "start": 3,
+      "end": 34,
+      "nonempty_lines": 29,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/replay-store.spec.ts",
+      "name": "<callback:4>",
+      "start": 4,
+      "end": 10,
+      "nonempty_lines": 7,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/replay-store.spec.ts",
+      "name": "<callback:12>",
+      "start": 12,
+      "end": 19,
+      "nonempty_lines": 8,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/replay-store.spec.ts",
+      "name": "<callback:21>",
+      "start": 21,
+      "end": 33,
+      "nonempty_lines": 12,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/replay-store.spec.ts",
+      "name": "<callback:28>",
+      "start": 28,
+      "end": 28,
+      "nonempty_lines": 1,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/socket-registry.spec.ts",
+      "name": "<callback:7>",
+      "start": 7,
+      "end": 59,
+      "nonempty_lines": 46,
+      "parameters": 0,
+      "complexity": 2,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/socket-registry.spec.ts",
+      "name": "<callback:8>",
+      "start": 8,
+      "end": 11,
+      "nonempty_lines": 4,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/socket-registry.spec.ts",
+      "name": "<callback:13>",
+      "start": 13,
+      "end": 25,
+      "nonempty_lines": 12,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/socket-registry.spec.ts",
+      "name": "<callback:27>",
+      "start": 27,
+      "end": 42,
+      "nonempty_lines": 14,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/socket-registry.spec.ts",
+      "name": "<callback:44>",
+      "start": 44,
+      "end": 51,
+      "nonempty_lines": 8,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    },
+    {
+      "file": "test/unit/socket-registry.spec.ts",
+      "name": "<callback:53>",
+      "start": 53,
+      "end": 58,
+      "nonempty_lines": 6,
+      "parameters": 0,
+      "complexity": 1,
+      "method": false,
+      "callback": true
+    }
+  ],
+  "duplicated_lines": [
+    "src/auth/identity-verifier.service.ts:151",
+    "src/auth/identity-verifier.service.ts:152",
+    "src/auth/identity-verifier.service.ts:153",
+    "src/auth/identity-verifier.service.ts:154",
+    "src/auth/identity-verifier.service.ts:155",
+    "src/auth/identity-verifier.service.ts:82",
+    "src/auth/identity-verifier.service.ts:83",
+    "src/auth/identity-verifier.service.ts:84",
+    "src/auth/identity-verifier.service.ts:85",
+    "src/auth/identity-verifier.service.ts:86",
+    "src/events/event-payload.validator.ts:188",
+    "src/events/event-payload.validator.ts:189",
+    "src/events/event-payload.validator.ts:190",
+    "src/events/event-payload.validator.ts:191",
+    "src/events/event-payload.validator.ts:192",
+    "src/events/event-payload.validator.ts:195",
+    "src/events/event-payload.validator.ts:196",
+    "src/events/event-payload.validator.ts:197",
+    "src/events/event-payload.validator.ts:198",
+    "src/events/event-payload.validator.ts:199",
+    "src/events/event-payload.validator.ts:204",
+    "src/events/event-payload.validator.ts:205",
+    "src/events/event-payload.validator.ts:206",
+    "src/events/event-payload.validator.ts:207",
+    "src/events/event-payload.validator.ts:208",
+    "src/events/event-payload.validator.ts:211",
+    "src/events/event-payload.validator.ts:212",
+    "src/events/event-payload.validator.ts:213",
+    "src/events/event-payload.validator.ts:214",
+    "src/events/event-payload.validator.ts:215",
+    "src/events/event-payload.validator.ts:223",
+    "src/events/event-payload.validator.ts:224",
+    "src/events/event-payload.validator.ts:225",
+    "src/events/event-payload.validator.ts:226",
+    "src/events/event-payload.validator.ts:227",
+    "src/events/event-payload.validator.ts:229",
+    "src/events/event-payload.validator.ts:230",
+    "src/events/event-payload.validator.ts:231",
+    "src/events/event-payload.validator.ts:232",
+    "src/events/event-payload.validator.ts:233",
+    "src/events/event-payload.validator.ts:70",
+    "src/events/event-payload.validator.ts:71",
+    "src/events/event-payload.validator.ts:72",
+    "src/events/event-payload.validator.ts:73",
+    "src/events/event-payload.validator.ts:74",
+    "src/events/event.types.ts:89",
+    "src/events/event.types.ts:90",
+    "src/events/event.types.ts:91",
+    "src/events/event.types.ts:92",
+    "src/events/event.types.ts:93",
+    "src/notifications/notification.factory.ts:100",
+    "src/notifications/notification.factory.ts:101",
+    "src/notifications/notification.factory.ts:113",
+    "src/notifications/notification.factory.ts:114",
+    "src/notifications/notification.factory.ts:115",
+    "src/notifications/notification.factory.ts:116",
+    "src/notifications/notification.factory.ts:117",
+    "src/notifications/notification.factory.ts:119",
+    "src/notifications/notification.factory.ts:120",
+    "src/notifications/notification.factory.ts:121",
+    "src/notifications/notification.factory.ts:142",
+    "src/notifications/notification.factory.ts:143",
+    "src/notifications/notification.factory.ts:144",
+    "src/notifications/notification.factory.ts:145",
+    "src/notifications/notification.factory.ts:146",
+    "src/notifications/notification.factory.ts:147",
+    "src/notifications/notification.factory.ts:148",
+    "src/notifications/notification.factory.ts:159",
+    "src/notifications/notification.factory.ts:160",
+    "src/notifications/notification.factory.ts:161",
+    "src/notifications/notification.factory.ts:162",
+    "src/notifications/notification.factory.ts:163",
+    "src/notifications/notification.factory.ts:165",
+    "src/notifications/notification.factory.ts:166",
+    "src/notifications/notification.factory.ts:167",
+    "src/notifications/notification.factory.ts:168",
+    "src/notifications/notification.factory.ts:169",
+    "src/notifications/notification.factory.ts:170",
+    "src/notifications/notification.factory.ts:171",
+    "src/notifications/notification.factory.ts:72",
+    "src/notifications/notification.factory.ts:73",
+    "src/notifications/notification.factory.ts:74",
+    "src/notifications/notification.factory.ts:75",
+    "src/notifications/notification.factory.ts:76",
+    "src/notifications/notification.factory.ts:78",
+    "src/notifications/notification.factory.ts:79",
+    "src/notifications/notification.factory.ts:80",
+    "src/notifications/notification.factory.ts:93",
+    "src/notifications/notification.factory.ts:94",
+    "src/notifications/notification.factory.ts:95",
+    "src/notifications/notification.factory.ts:96",
+    "src/notifications/notification.factory.ts:97",
+    "src/notifications/notification.factory.ts:99",
+    "src/realtime/realtime.gateway.ts:51",
+    "src/realtime/realtime.gateway.ts:52",
+    "src/realtime/realtime.gateway.ts:53",
+    "src/realtime/realtime.gateway.ts:54",
+    "src/realtime/realtime.gateway.ts:55",
+    "test/e2e/app.e2e.spec.ts:141",
+    "test/e2e/app.e2e.spec.ts:143",
+    "test/e2e/app.e2e.spec.ts:144",
+    "test/e2e/app.e2e.spec.ts:145",
+    "test/e2e/app.e2e.spec.ts:146",
+    "test/e2e/app.e2e.spec.ts:147",
+    "test/e2e/app.e2e.spec.ts:148",
+    "test/e2e/app.e2e.spec.ts:48",
+    "test/e2e/app.e2e.spec.ts:49",
+    "test/e2e/app.e2e.spec.ts:50",
+    "test/e2e/app.e2e.spec.ts:51",
+    "test/e2e/app.e2e.spec.ts:52",
+    "test/e2e/app.e2e.spec.ts:53",
+    "test/e2e/app.e2e.spec.ts:54",
+    "test/e2e/app.e2e.spec.ts:55",
+    "test/e2e/app.e2e.spec.ts:56",
+    "test/e2e/app.e2e.spec.ts:58",
+    "test/e2e/app.e2e.spec.ts:68",
+    "test/e2e/app.e2e.spec.ts:69",
+    "test/e2e/app.e2e.spec.ts:70",
+    "test/e2e/app.e2e.spec.ts:71",
+    "test/e2e/app.e2e.spec.ts:72",
+    "test/e2e/app.e2e.spec.ts:73",
+    "test/e2e/app.e2e.spec.ts:74",
+    "test/e2e/app.e2e.spec.ts:75",
+    "test/e2e/app.e2e.spec.ts:76",
+    "test/e2e/app.e2e.spec.ts:78",
+    "test/e2e/presence.e2e.spec.ts:171",
+    "test/e2e/presence.e2e.spec.ts:173",
+    "test/e2e/presence.e2e.spec.ts:174",
+    "test/e2e/presence.e2e.spec.ts:175",
+    "test/e2e/presence.e2e.spec.ts:176",
+    "test/e2e/presence.e2e.spec.ts:177",
+    "test/e2e/presence.e2e.spec.ts:178",
+    "test/helpers/fixtures.ts:100",
+    "test/helpers/fixtures.ts:101",
+    "test/helpers/fixtures.ts:117",
+    "test/helpers/fixtures.ts:118",
+    "test/helpers/fixtures.ts:119",
+    "test/helpers/fixtures.ts:120",
+    "test/helpers/fixtures.ts:121",
+    "test/helpers/fixtures.ts:131",
+    "test/helpers/fixtures.ts:132",
+    "test/helpers/fixtures.ts:133",
+    "test/helpers/fixtures.ts:134",
+    "test/helpers/fixtures.ts:135",
+    "test/helpers/fixtures.ts:136",
+    "test/helpers/fixtures.ts:137",
+    "test/helpers/fixtures.ts:138",
+    "test/helpers/fixtures.ts:139",
+    "test/helpers/fixtures.ts:140",
+    "test/helpers/fixtures.ts:141",
+    "test/helpers/fixtures.ts:151",
+    "test/helpers/fixtures.ts:152",
+    "test/helpers/fixtures.ts:153",
+    "test/helpers/fixtures.ts:154",
+    "test/helpers/fixtures.ts:155",
+    "test/helpers/fixtures.ts:156",
+    "test/helpers/fixtures.ts:157",
+    "test/helpers/fixtures.ts:158",
+    "test/helpers/fixtures.ts:159",
+    "test/helpers/fixtures.ts:160",
+    "test/helpers/fixtures.ts:161",
+    "test/helpers/fixtures.ts:214",
+    "test/helpers/fixtures.ts:215",
+    "test/helpers/fixtures.ts:216",
+    "test/helpers/fixtures.ts:217",
+    "test/helpers/fixtures.ts:218",
+    "test/helpers/fixtures.ts:74",
+    "test/helpers/fixtures.ts:75",
+    "test/helpers/fixtures.ts:76",
+    "test/helpers/fixtures.ts:77",
+    "test/helpers/fixtures.ts:78",
+    "test/helpers/fixtures.ts:79",
+    "test/helpers/fixtures.ts:80",
+    "test/helpers/fixtures.ts:81",
+    "test/helpers/fixtures.ts:82",
+    "test/helpers/fixtures.ts:93",
+    "test/helpers/fixtures.ts:94",
+    "test/helpers/fixtures.ts:95",
+    "test/helpers/fixtures.ts:96",
+    "test/helpers/fixtures.ts:97",
+    "test/helpers/fixtures.ts:98",
+    "test/helpers/fixtures.ts:99",
+    "test/unit/event-validator.spec.ts:108",
+    "test/unit/event-validator.spec.ts:109",
+    "test/unit/event-validator.spec.ts:110",
+    "test/unit/event-validator.spec.ts:111",
+    "test/unit/event-validator.spec.ts:112",
+    "test/unit/identity-verifier.spec.ts:100",
+    "test/unit/identity-verifier.spec.ts:101",
+    "test/unit/identity-verifier.spec.ts:102",
+    "test/unit/identity-verifier.spec.ts:104",
+    "test/unit/identity-verifier.spec.ts:105",
+    "test/unit/identity-verifier.spec.ts:32",
+    "test/unit/identity-verifier.spec.ts:33",
+    "test/unit/identity-verifier.spec.ts:34",
+    "test/unit/identity-verifier.spec.ts:35",
+    "test/unit/identity-verifier.spec.ts:36",
+    "test/unit/identity-verifier.spec.ts:37",
+    "test/unit/identity-verifier.spec.ts:38",
+    "test/unit/identity-verifier.spec.ts:55",
+    "test/unit/identity-verifier.spec.ts:56",
+    "test/unit/identity-verifier.spec.ts:57",
+    "test/unit/identity-verifier.spec.ts:58",
+    "test/unit/identity-verifier.spec.ts:59",
+    "test/unit/identity-verifier.spec.ts:60",
+    "test/unit/identity-verifier.spec.ts:61",
+    "test/unit/identity-verifier.spec.ts:77",
+    "test/unit/identity-verifier.spec.ts:78",
+    "test/unit/identity-verifier.spec.ts:79",
+    "test/unit/identity-verifier.spec.ts:80",
+    "test/unit/identity-verifier.spec.ts:81",
+    "test/unit/identity-verifier.spec.ts:82",
+    "test/unit/identity-verifier.spec.ts:86",
+    "test/unit/identity-verifier.spec.ts:87",
+    "test/unit/identity-verifier.spec.ts:88",
+    "test/unit/identity-verifier.spec.ts:90",
+    "test/unit/identity-verifier.spec.ts:91",
+    "test/unit/notification-factory.spec.ts:26",
+    "test/unit/notification-factory.spec.ts:27",
+    "test/unit/notification-factory.spec.ts:28",
+    "test/unit/notification-factory.spec.ts:29",
+    "test/unit/notification-factory.spec.ts:30"
+  ],
+  "blocks": [
+    {
+      "sha256": "6b6c17943b093b7f235861a0ef51e18f13fa14a07a87d2292297fb027beb2fce",
+      "occurrences": [
+        {
+          "file": "src/auth/identity-verifier.service.ts",
+          "lines": [
+            82,
+            83,
+            84,
+            85,
+            86
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            214,
+            215,
+            216,
+            217,
+            218
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "5f6d7bbafa76e29a09f763c79a17a5db3762c1b1534bd9794bf9ddac4576f9db",
+      "occurrences": [
+        {
+          "file": "src/auth/identity-verifier.service.ts",
+          "lines": [
+            151,
+            152,
+            153,
+            154,
+            155
+          ]
+        },
+        {
+          "file": "src/events/event-payload.validator.ts",
+          "lines": [
+            70,
+            71,
+            72,
+            73,
+            74
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "d342a6421da473608ed5fc11fca85680da6046df3b3fb44cdee98ab54ba130b9",
+      "occurrences": [
+        {
+          "file": "src/events/event-payload.validator.ts",
+          "lines": [
+            188,
+            189,
+            190,
+            191,
+            192
+          ]
+        },
+        {
+          "file": "src/events/event-payload.validator.ts",
+          "lines": [
+            204,
+            205,
+            206,
+            207,
+            208
+          ]
+        },
+        {
+          "file": "src/events/event-payload.validator.ts",
+          "lines": [
+            223,
+            224,
+            225,
+            226,
+            227
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "c6ed970d9fd650198b57bc8a3f4283c8e9ff4750707c54edcf44f38428004054",
+      "occurrences": [
+        {
+          "file": "src/events/event-payload.validator.ts",
+          "lines": [
+            195,
+            196,
+            197,
+            198,
+            199
+          ]
+        },
+        {
+          "file": "src/events/event-payload.validator.ts",
+          "lines": [
+            211,
+            212,
+            213,
+            214,
+            215
+          ]
+        },
+        {
+          "file": "src/events/event-payload.validator.ts",
+          "lines": [
+            229,
+            230,
+            231,
+            232,
+            233
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "33449ed74ce092589c74ee6d174d5c5f862750a0dfc7405e5be9aacbe9815205",
+      "occurrences": [
+        {
+          "file": "src/events/event.types.ts",
+          "lines": [
+            89,
+            90,
+            91,
+            92,
+            93
+          ]
+        },
+        {
+          "file": "src/realtime/realtime.gateway.ts",
+          "lines": [
+            51,
+            52,
+            53,
+            54,
+            55
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "0ff286d1ec9bbd716f10f01319dcea376632f026d1e63df016dd534d7e75a16f",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            93,
+            94,
+            95,
+            96,
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "92a5012a0c9717711c7e5c2508aeae85f5d68a2b427bb8b672d6e3e558b8261d",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            73,
+            74,
+            75,
+            76,
+            78
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            94,
+            95,
+            96,
+            97,
+            99
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "8b3b0ebc2b371d4090e7d70992e67cbabd3e7ad565725975c61cc8efcae45c05",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            74,
+            75,
+            76,
+            78,
+            79
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            95,
+            96,
+            97,
+            99,
+            100
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "88df2dc4883bc85a7bee31343b00215d637e148f3f77c91d1007eee29ed622fe",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            75,
+            76,
+            78,
+            79,
+            80
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            96,
+            97,
+            99,
+            100,
+            101
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            116,
+            117,
+            119,
+            120,
+            121
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            162,
+            163,
+            165,
+            166,
+            167
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "d8417557a28a505198f93bc06e86a17ca4729b1b82e54b00eae4bc83376d8b4f",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            113,
+            114,
+            115,
+            116,
+            117
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            159,
+            160,
+            161,
+            162,
+            163
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "48cb9dfc341adf8ae027e79bb01ec0c3a7e602ae0430a45a24dd6c41bdbe8552",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            114,
+            115,
+            116,
+            117,
+            119
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            160,
+            161,
+            162,
+            163,
+            165
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "8bef3e81f43bfb28de5bb03be3407d02972e0c93a0020cb33536ed25606791c6",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            115,
+            116,
+            117,
+            119,
+            120
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            161,
+            162,
+            163,
+            165,
+            166
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "e005246c063703cb668ac8514db4dd78631f80fd9e8f1563e1115b5613d9aa66",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            142,
+            143,
+            144,
+            145,
+            146
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            165,
+            166,
+            167,
+            168,
+            169
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "85fa67ac5e8956a174b73515d154de2b2f032f89193b5c36908e357a356f8869",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            143,
+            144,
+            145,
+            146,
+            147
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            166,
+            167,
+            168,
+            169,
+            170
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "4d7a885cf087271a20c6784d1739ae967142e7e38f357ba07d2fe6ecebb6ed8f",
+      "occurrences": [
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            144,
+            145,
+            146,
+            147,
+            148
+          ]
+        },
+        {
+          "file": "src/notifications/notification.factory.ts",
+          "lines": [
+            167,
+            168,
+            169,
+            170,
+            171
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "681b1c0378d92ada4ba40a7884920ad1fcd100b7834f7adefe6a9bfef151fe1a",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            48,
+            49,
+            50,
+            51,
+            52
+          ]
+        },
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            68,
+            69,
+            70,
+            71,
+            72
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "68426e14b21131c6624cf58848515c3288976a1b886c86195cac50710e743da9",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            49,
+            50,
+            51,
+            52,
+            53
+          ]
+        },
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            69,
+            70,
+            71,
+            72,
+            73
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "34ff7989ba114f8c0f0ae09387baca5c307cde56b850b178fd074acc8dced855",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            50,
+            51,
+            52,
+            53,
+            54
+          ]
+        },
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            70,
+            71,
+            72,
+            73,
+            74
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "67dec7bd2f5ad5fa7c123c9193869290c7e296734c1616cd1cb6b59b5f6857f3",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            51,
+            52,
+            53,
+            54,
+            55
+          ]
+        },
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            71,
+            72,
+            73,
+            74,
+            75
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "777072acb3ecef9b3f57b37c43afba1d71559b651ba3d3e39a7d93151c3a1001",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            52,
+            53,
+            54,
+            55,
+            56
+          ]
+        },
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            72,
+            73,
+            74,
+            75,
+            76
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "9ef3edc50d5e6fa58886b533928f07dd0bc8053a37f883b73f38e9c911c104f7",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            53,
+            54,
+            55,
+            56,
+            58
+          ]
+        },
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            73,
+            74,
+            75,
+            76,
+            78
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "aeb247e0edc7f3b47d55b6f3b4d58ad4486c243912165cc709ec0ff4c4943691",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            141,
+            143,
+            144,
+            145,
+            146
+          ]
+        },
+        {
+          "file": "test/e2e/presence.e2e.spec.ts",
+          "lines": [
+            171,
+            173,
+            174,
+            175,
+            176
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "f8f300f9a8543890826576a8433ad9e3dc3c27ecc5f2353e1d2d44a3af891808",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            143,
+            144,
+            145,
+            146,
+            147
+          ]
+        },
+        {
+          "file": "test/e2e/presence.e2e.spec.ts",
+          "lines": [
+            173,
+            174,
+            175,
+            176,
+            177
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "b9603945781248a36ba0110e6e7993054257c913c7b61a3352ebb8545767e786",
+      "occurrences": [
+        {
+          "file": "test/e2e/app.e2e.spec.ts",
+          "lines": [
+            144,
+            145,
+            146,
+            147,
+            148
+          ]
+        },
+        {
+          "file": "test/e2e/presence.e2e.spec.ts",
+          "lines": [
+            174,
+            175,
+            176,
+            177,
+            178
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "2d5c88a6a36664af97a655cd61557074e9fbcfd31d4e7e4d0e891d69a4d0d8e1",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            74,
+            75,
+            76,
+            77,
+            78
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            93,
+            94,
+            95,
+            96,
+            97
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "2f4544eb2a36246ebcc5491ca54ae87c48827bff4fc2d27becc791f4d018233b",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            75,
+            76,
+            77,
+            78,
+            79
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            94,
+            95,
+            96,
+            97,
+            98
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "c0b012834e57c58893d99eb39e576165c9e44ac28bd8b730f356be1d519b977c",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            76,
+            77,
+            78,
+            79,
+            80
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            95,
+            96,
+            97,
+            98,
+            99
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "c4c293f9f62b6acfd75d39054b92465facbb4bd4ac74b11efa1b1f0bcbf8c554",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            77,
+            78,
+            79,
+            80,
+            81
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            96,
+            97,
+            98,
+            99,
+            100
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "e37ad006ef48aac2c8c3bab3f4449f42ff6f80b61ce567960bd39d86d5cc869c",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            78,
+            79,
+            80,
+            81,
+            82
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            97,
+            98,
+            99,
+            100,
+            101
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "341554207f47da3554cf9c1aab23560f338223df0ddb0481c49556219188cdc3",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            117,
+            118,
+            119,
+            120,
+            121
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            137,
+            138,
+            139,
+            140,
+            141
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            157,
+            158,
+            159,
+            160,
+            161
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "a1e060f5593720b637c2d29c300952ceac0ef1ad1e91999ccfb1bd252bd9fa3f",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            131,
+            132,
+            133,
+            134,
+            135
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            151,
+            152,
+            153,
+            154,
+            155
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "90113cb648cf1415e9548822942285c4cdbadf674310199e797c10bdd27e64ca",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            132,
+            133,
+            134,
+            135,
+            136
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            152,
+            153,
+            154,
+            155,
+            156
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "0e6609e3541296f7c216448b0b685e04ef3ffa74e47c4bf62a089ba7db7ea871",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            133,
+            134,
+            135,
+            136,
+            137
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            153,
+            154,
+            155,
+            156,
+            157
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "604f0eba21a15fa6f062b73793b4d1904b31d735bd5004296928dc5a133b18d5",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            134,
+            135,
+            136,
+            137,
+            138
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            154,
+            155,
+            156,
+            157,
+            158
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "213068949db2301db0566e7683fa39b55b7c1b504839a7f7b2f524b1a540b925",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            135,
+            136,
+            137,
+            138,
+            139
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            155,
+            156,
+            157,
+            158,
+            159
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "b6b21565057876877c9486ae430263d25c97ae3774ea9d9fd65bb6e16e196883",
+      "occurrences": [
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            136,
+            137,
+            138,
+            139,
+            140
+          ]
+        },
+        {
+          "file": "test/helpers/fixtures.ts",
+          "lines": [
+            156,
+            157,
+            158,
+            159,
+            160
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "9bc158ae70855d91b791c823499a03e3aeb522acbb7153a63a28bb5ba7da166a",
+      "occurrences": [
+        {
+          "file": "test/unit/event-validator.spec.ts",
+          "lines": [
+            108,
+            109,
+            110,
+            111,
+            112
+          ]
+        },
+        {
+          "file": "test/unit/notification-factory.spec.ts",
+          "lines": [
+            26,
+            27,
+            28,
+            29,
+            30
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "acdeec658e15b447ce91b4797a6b4c52eb3ca85643f1ea9373868acc11edd2e1",
+      "occurrences": [
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            32,
+            33,
+            34,
+            35,
+            36
+          ]
+        },
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            55,
+            56,
+            57,
+            58,
+            59
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "a0c3809bb53f2740356047c1779b34a22c98ae62f83821ccc59d9785373f45b6",
+      "occurrences": [
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            33,
+            34,
+            35,
+            36,
+            37
+          ]
+        },
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            56,
+            57,
+            58,
+            59,
+            60
+          ]
+        },
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            77,
+            78,
+            79,
+            80,
+            81
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "24cfb1abc1f0e3151e92370c37efd7a86f8317c5da0c646a278df84d3317c171",
+      "occurrences": [
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            34,
+            35,
+            36,
+            37,
+            38
+          ]
+        },
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            57,
+            58,
+            59,
+            60,
+            61
+          ]
+        },
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            78,
+            79,
+            80,
+            81,
+            82
+          ]
+        }
+      ]
+    },
+    {
+      "sha256": "1ce1f1a6f0fdfe691906c478514c3e3e0e58e53ba9a74f7ab360a8b3f4f473af",
+      "occurrences": [
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            86,
+            87,
+            88,
+            90,
+            91
+          ]
+        },
+        {
+          "file": "test/unit/identity-verifier.spec.ts",
+          "lines": [
+            100,
+            101,
+            102,
+            104,
+            105
+          ]
+        }
+      ]
+    }
+  ],
+  "layers": {
+    "directory_matches": [],
+    "presentation_files": [
+      "src/events/events.controller.ts",
+      "src/health/health.controller.ts"
+    ],
+    "logic_files": [
+      "src/auth/identity-verifier.service.ts",
+      "src/auth/jwt-verifier.service.ts",
+      "src/common/replay-store.service.ts",
+      "src/events/events.service.ts",
+      "src/realtime/connection-limiter.service.ts",
+      "src/realtime/socket-registry.service.ts"
+    ],
+    "estimated_architectural_layers": 2,
+    "limitation": "Feature-based Nest modules: controller/service filenames versus zero conventional layer directory markers; exact official matcher unavailable"
+  }
+}
